@@ -1,0 +1,38 @@
+{
+  "nr": 420,
+  "currency": "EUR",
+  "date": {
+    "full": "Die Lottozahlen vom Freitag, den 03.04.2020",
+    "day": 3,
+    "month": 4,
+    "year": 2020,
+    "hour": 21,
+    "minute": 0,
+    "dayOfWeek": "Freitag"
+  },
+  "closingDate": "03.04.2020, 19:00",
+  "lateClosingDate": "03.04.2020, 20:10",
+  "drawingDate": "03.04.2020, 21:00",
+  "numbers": [3, 21, 26, 40, 41],
+  "euroNumbers": [8, 10],
+  "jackpot": "90",
+  "marketingJackpot": "90",
+  "specialMarketingJackpot": "90",
+  "climbedSince": 9,
+  "Winners": 1577974,
+  "odds": {
+    "rank0": { "winners": 0, "specialPrize": 0, "prize": 0 },
+    "rank1": { "winners": 4, "specialPrize": 0, "prize": 9000000000 },
+    "rank2": { "winners": 7, "specialPrize": 0, "prize": 610429730 },
+    "rank3": { "winners": 55, "specialPrize": 0, "prize": 12995490 },
+    "rank8": { "winners": 1039, "specialPrize": 0, "prize": 2340 },
+    "rank9": { "winners": 2042, "specialPrize": 0, "prize": 1730 },
+    "rank10": { "winners": 2692, "specialPrize": 0, "prize": 1430 },
+    "rank4": { "winners": 39726, "specialPrize": 0, "prize": 383340 },
+    "rank5": { "winners": 49769, "specialPrize": 0, "prize": 24510 },
+    "rank6": { "winners": 2710, "specialPrize": 0, "prize": 11180 },
+    "rank11": { "winners": 97331, "specialPrize": 0, "prize": 1200 },
+    "rank7": { "winners": 216282, "specialPrize": 0, "prize": 5420 },
+    "rank12": { "winners": 754661, "specialPrize": 0, "prize": 800 }
+  }
+}
