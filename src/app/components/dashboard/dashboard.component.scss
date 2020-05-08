@@ -1,6 +1,98 @@
-body {
-  background: #dedede;
+.error {
+  body {
+    background: #dedede;
+  }
+  .page-wrap {
+    min-height: 100vh;
+  }
 }
-.page-wrap {
-  min-height: 100vh;
+
+.container {
+  margin-top: 120px;
+  padding-top: 20px;
+
+  btn-group {
+    background-color: #fff;
+    color: #69a507;
+    width: 100%;
+    height: 42px;
+    margin-bottom: 36px;
+    margin-top: 24px;
+    font-weight: 700;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+    background: #ccc;
+    font-size: 0;
+  
+    a:hover {
+      background-color: rgb(209, 209, 196);
+    }
+
+  }
 }
+
+
+.selected {
+  background: #ffe066 !important;
+  color: #535353 !important;
+  text-shadow: none !important;
+}
+
+.marged {
+  margin-bottom: 17px;
+}
+
+.odds {
+  font-size: 17px;
+  .euroJackpotColor {
+    color: #815422 !important;
+  }
+}
+
+// Winners numbers
+.results {
+  font-size: 14px;
+  color: #012406;
+  list-style: none;
+  padding: 0;
+  margin-bottom: 0;
+  display: inline-block;
+
+  .number {
+    display: inline-block;
+    font-size: 17px;
+    line-height: 35px;
+    text-align: center;
+    border: 1px solid #d9deda;
+    border-radius: 50%;
+    margin-right: 7px;
+    margin-bottom: 7px;
+    width: 35px;
+    height: 35px;
+  }
+
+  .euronumber {
+    border: 1px solid #ca7f26;
+  }
+}
+
+// Table results
+.mat-table {
+  background: #fff;
+  width: 100%;
+  border: 1px solid;
+
+  .mat-cell,
+  .mat-header-cell {
+    border-bottom: 1px solid #ccc;
+    border-top: 1px solid #ccc;
+    border-left: none;
+    border-right: none;
+    color: gray;
+  }
+}
+
+
+
+
+

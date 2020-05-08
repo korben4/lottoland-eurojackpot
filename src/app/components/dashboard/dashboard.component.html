@@ -1,10 +1,112 @@
-<div class="page-wrap d-flex flex-row align-items-center" *ngIf="error" >
+<div class="page-wrap d-flex flex-row align-items-center error" *ngIf="error">
   <div class="container">
-      <div class="row justify-content-center">
-          <div class="col-md-12 text-center">
-              <span class="display-1 d-block"> {{ error.statusText }} </span>
-              <div class="mb-4 lead"> {{ error.message }} </div>
-          </div>
+    <div class="row justify-content-center">
+      <div class="col-md-12 text-center">
+        <span class="display-1 d-block"> {{ error.statusText }} </span>
+        <div class="mb-4 lead">{{ error.message }}</div>
       </div>
+    </div>
   </div>
 </div>
+
+<div class="my-container">
+  <ng-template #customLoadingTemplate>
+    <div class="custom-class">
+      <h3>
+        Loading...
+      </h3>
+    </div>
+  </ng-template>
+
+  <ngx-loading [show]="!loaded" [config]="{ backdropBorderRadius: '3px' }" [template]="customLoadingTemplate"></ngx-loading>
+  //...
+</div>
+
+<!-- Page Content -->
+<div class="container" fxLayout="row" fxLayoutAlign="space-between" *ngIf="loaded && !error">
+  <div class="btn-group btn-block" role="group" aria-label="Basic example">
+    <a type="button" class="btn btn-light responsive-width">EuroJackpot</a>
+    <a type="button" class="btn btn-light responsive-width selected">EuroJackpot Results &amp; Prize Breakdow</a>
+    <a type="button" class="btn btn-light responsive-width">EuroJackpot Help &amp; FAQ</a>
+  </div>
+
+  <hr />
+
+  <div class="row">
+    <h3 class="odds"><span class="euroJackpotColor">EuroJackpot</span> Results for Friday 01 May 2020</h3>
+  </div>
+  <div class="row">
+    <div class="col-md-10 marged">
+      <ul class="results">
+        <li class="number" *ngFor="let item of currentResult.numbers">
+          {{ item }}
+        </li>
+        <li class="number euronumber" *ngFor="let item of currentResult.euroNumbers">
+          {{ item }}
+        </li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="row" *ngIf="componedList.length > 0">
+    <div class="col-md-9">
+      <table mat-table [dataSource]="componedList" class="mat-elevation-z8 tb">
+        <ng-container matColumnDef="index">
+          <th mat-header-cell *matHeaderCellDef>Tier</th>
+          <td mat-cell *matCellDef="let element; let i = index">{{ i }}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="match">
+          <th mat-header-cell *matHeaderCellDef>Match</th>
+          <td mat-cell *matCellDef="let odd">{{ odd.match.number }} Numbers + {{ odd.match.euronumber }} Euronumbers</td>
+        </ng-container>
+
+        <ng-container matColumnDef="winners">
+          <th mat-header-cell *matHeaderCellDef class="t-winners">Winners</th>
+          <td mat-cell *matCellDef="let odd">{{ odd.winners | number }}x</td>
+        </ng-container>
+
+        <ng-container matColumnDef="amount">
+          <th mat-header-cell *matHeaderCellDef>Amount</th>
+          <td mat-cell *matCellDef="let odd">{{ odd.amount | currency: 'EUR':true }}</td>
+        </ng-container>
+
+        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+      </table>
+    </div>
+
+    <div class="col">
+      <div class="row">
+        <!-- <div class="col-lg-4 col-md-6 mb-4"> -->
+        <div class="card h-100">
+          <div class="card-body">
+            <h2 class="card-title">The EuroJackpot numbers for {{ currentResult.drawingDate }}</h2>
+            <p class="card-text">
+              The {{ currentResult.nr }}th draw for the EuroJackpot was held on {{ currentResult.drawingDate }}, as usual at 9pm in
+              Helsinki.
+            </p>
+          </div>
+          <!-- </div> -->
+        </div>
+      </div>
+
+      <div class="row">
+        <br />
+        <!-- <div class="col-lg-4 col-md-6 mb-4"> -->
+        <div class="card h-100">
+          <div class="card-body">
+            <h2 class="card-title">EuroJackpot numbers for {{ currentResult.drawingDate }}</h2>
+            <p class="card-text">
+              The balls used for the draw are made of a synthetic polymer, softer than ping-pong balls. The results are broadcast after the
+              draw, with the draw-machines independently checked by the VTT Technical Research Center of Finland.
+            </p>
+            <p>Lottoland published the draw results immediately after the draw on {{ currentResult.date.full | date }}</p>
+          </div>
+          <!-- </div> -->
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<br />
