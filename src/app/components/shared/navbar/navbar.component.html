@@ -1,0 +1,59 @@
+<nav class="navbar navbar-expand-lg fixed-top first-nav">
+  <a class="navbar-brand js-scroll-trigger"><img id="brandImage" class="logo" src="/assets/logo.svg" alt="" /></a>
+  <div class="input-group" *ngIf="showSearchBox">
+    <small id="KeywordsHelpBlock" class="text-muted">
+      Search for Lottoland products
+    </small>
+    <span class="w-100"></span>
+    <input class="form-control" name="title" aria-label="With textarea" />
+  </div>
+  <a
+    class="navbar-toggler navbar-toggler-right rounded"
+    type="button"
+    data-toggle="collapse"
+    data-target="#navbarResponsive"
+    aria-controls="navbarResponsive"
+    aria-expanded="false"
+  >
+    Menu <i class="fas fa-bars"></i>
+  </a>
+  <div class="collapse navbar-collapse" id="navbarResponsive">
+    <ul class="navbar-nav ml-auto">
+      <li *ngIf="showSearchBox" (click)="showSearchBox = false">
+        <i class="fas fa-times"></i>
+      </li>
+      <li *ngIf="!showSearchBox" (click)="showSearchBox = true">
+        <i class="fas fa-search"></i>
+      </li>
+      <div class="left"></div>
+      <li><span>Log in</span></li>
+      <div class="left"></div>
+      <li><span>Register</span></li>
+      <div class="left"></div>
+      <li>
+        <span>To checkout</span>
+      </li>
+    </ul>
+  </div>
+</nav>
+
+<nav class="navbar navbar-expand-lg fixed-top fixed-top-2 second-nav">
+  <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbar2">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+  <div id="navbar2">
+    <ul class="navbar-nav">
+      <li><b>PowerBall</b></li>
+      <li class="selected"><b>Eurojackpot</b></li>
+      <li><b>Euromillions</b></li>
+      <li><b>More JackPots</b></li>
+      <li><b>Promotions</b></li>
+      <li><b>Scratchcards</b></li>
+      <li><b>Instant Win</b></li>
+      <li>
+        <div class="hotLabel hotLabel--left-aligned">POPULAR</div>
+        <b>Games</b>
+      </li>
+    </ul>
+  </div>
+</nav>
