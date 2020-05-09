@@ -1,11 +1,10 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
-
-import { Last, Next, Odd } from '../../interfaces/interfaces';
-import { EurojackpotService } from '../../services/eurojackpot.service';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Subscription } from 'rxjs';
-
-import Swal from 'sweetalert2';
 import { Item, Match } from 'src/app/models/item.model';
+import Swal from 'sweetalert2';
+
+import { Last, Odd } from '../../interfaces/interfaces';
+import { EurojackpotService } from '../../services/eurojackpot.service';
 
 @Component({
   selector: 'app-dashboard',
@@ -13,7 +12,7 @@ import { Item, Match } from 'src/app/models/item.model';
   styleUrls: ['./dashboard.component.scss'],
 })
 export class DashboardComponent implements OnInit, OnDestroy {
-  lastSub: Subscription;
+  subscritions: Subscription[] = [];
 
   // Eurojackpot results
   currentResult: Last;
@@ -56,37 +55,32 @@ export class DashboardComponent implements OnInit, OnDestroy {
   async getLastResult() {
     // We use a promise to keep the flow synchronous
     const resultPromise = new Promise(resolve => {
-      this.lastSub = this.ejService.getLastResult().subscribe(
-        data => {
-          // Print the data and asign to our local variable
-          console.log(data);
-          this.currentResult = data;
+      this.subscritions.push(
+        this.ejService.getLastResult().subscribe(
+          data => {
+            // Print the data and asign to our local variable
+            this.currentResult = data;
 
-          // Check if there's any winners
-          if (this.currentResult.odds) {
-            // Take the winners into our odd frame
-            this.oddList = Object.values(this.currentResult.odds);
-            // Clean removing the first element (rank0: {winners: 0, specialPrize: 0, prize: 0})
-            this.oddList.shift();
-            // Resolve the promise
-            resolve(true);
-            return;
+            // Check if there's any winners
+            if (this.currentResult.odds) {
+              // Take the winners into our odd frame
+              this.oddList = Object.values(this.currentResult.odds);
+              // Clean removing the first element (rank0: {winners: 0, specialPrize: 0, prize: 0})
+              this.oddList.shift();
+              // Resolve the promise
+              resolve(true);
+              return;
+            }
+            // If there aren't any oficial winners already, we finish here
+            this.loaded = true;
+            resolve(false);
+          },
+          error => {
+            this.manageError(error);
+            this.loaded = true;
+            resolve(false);
           }
-          // If there aren't any oficial winners already, we finish here
-          this.loaded = true;
-          resolve(false);
-        },
-        error => {
-          console.log(error);
-          this.error = error;
-          Swal.fire({
-            icon: 'error',
-            title: 'Oops...',
-            text: error.message,
-          });
-          this.loaded = true;
-          resolve(false);
-        }
+        )
       );
     });
     // Waiting for our service
@@ -136,12 +130,11 @@ export class DashboardComponent implements OnInit, OnDestroy {
     while (d.getDay() !== 5) {
       d.setDate(d.getDate() + 1);
     }
-    console.log(d);
 
     // Get all the other Fridays in the month
     while (d.getFullYear() == year) {
       const pushDate = new Date(d.getTime());
-      if (yearSelected !== 2020) {
+      if (yearSelected != 2020) {
         this.drawDates.unshift(pushDate);
       } else if (pushDate < new Date()) {
         this.drawDates.unshift(pushDate);
@@ -167,13 +160,13 @@ export class DashboardComponent implements OnInit, OnDestroy {
   // Function to simulate a call to get an specifig result in a date
   // Actually we call a local library with json test files
   getDatedResult(ev) {
-    console.log(ev.target.selectedOptions[0].value);
     const date = new Date(ev.target.selectedOptions[0].value);
 
     // Date formated with 0s
     const dateFormat = ('0' + date.getDate()).slice(-2) + ('0' + (date.getMonth() + 1)).slice(-2) + date.getFullYear();
 
-    const currentDateFormat =   ('0' + this.currentDate.getDate()).slice(-2) + ('0' + (this.currentDate.getMonth() + 1)).slice(-2) + this.currentDate.getFullYear();
+    const currentDateFormat =
+      ('0' + this.currentDate.getDate()).slice(-2) + ('0' + (this.currentDate.getMonth() + 1)).slice(-2) + this.currentDate.getFullYear();
 
     // If the new date is the current date, we get that result from the real service
     if (dateFormat == currentDateFormat) {
@@ -182,33 +175,42 @@ export class DashboardComponent implements OnInit, OnDestroy {
     }
 
     // Calling the service with the date formatted as a param
-    this.ejService.getDatedResult(dateFormat).subscribe(
-      data => {
-        this.currentResult = data;
-        console.log(this.currentResult);
-        this.oddList = Object.values(this.currentResult.odds);
-        this.oddList.shift();
-        this.generateArray();
-      },
-      err => {
-        // If there aren't any test files for this date
-        Swal.fire({
-          icon: 'error',
-          title: 'Oops...',
-          text: 'Results not found',
-        });
-      }
+    this.subscritions.push(
+      this.ejService.getDatedResult(dateFormat).subscribe(
+        data => {
+          this.currentResult = data;
+          this.oddList = Object.values(this.currentResult.odds);
+          this.oddList.shift();
+          this.generateArray();
+        },
+        err => {
+          // If there aren't any test files for this date
+          this.manageError(err);
+        }
+      )
     );
   }
 
-
   showNext() {
-    this.ejService.getNext().subscribe(data => {
-      Swal.fire('Next draw', `The next draw will be on ${data.drawingDate}`, 'success');
+    this.subscritions.push(
+      this.ejService.getNext().subscribe(data => {
+        Swal.fire('Next draw', `The next draw will be on ${data.drawingDate}`, 'success');
+      })
+    );
+  }
+
+  manageError(error: any) {
+    this.error = error;
+    Swal.fire({
+      icon: 'error',
+      title: 'Oops...',
+      text: error.message,
     });
   }
 
   ngOnDestroy(): void {
-    this.lastSub.unsubscribe();
+    this.subscritions.forEach(sc => {
+      sc.unsubscribe();
+    });
   }
 }
