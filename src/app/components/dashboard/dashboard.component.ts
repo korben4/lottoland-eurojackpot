@@ -5,6 +5,10 @@ import Swal from 'sweetalert2';
 
 import { Last, Odd } from '../../interfaces/interfaces';
 import { EurojackpotService } from '../../services/eurojackpot.service';
+import { Store } from '@ngrx/store';
+import { AppState } from 'src/app/store/app.reducers';
+import { filter } from 'rxjs/operators';
+import { setResult, loadDateResult } from '../../store/actions/euroJackpot.actions';
 
 @Component({
   selector: 'app-dashboard',
@@ -12,7 +16,7 @@ import { EurojackpotService } from '../../services/eurojackpot.service';
   styleUrls: ['./dashboard.component.scss'],
 })
 export class DashboardComponent implements OnInit, OnDestroy {
-  subscritions: Subscription[] = [];
+  subscriptions: Subscription[] = [];
 
   // Eurojackpot results
   currentResult: Last;
@@ -40,11 +44,33 @@ export class DashboardComponent implements OnInit, OnDestroy {
   yearChanged = false;
 
   error: any;
+  loading: boolean;
   loaded = false;
 
-  constructor(private ejService: EurojackpotService) {}
+  constructor(private ejService: EurojackpotService, private store: Store<AppState>) {}
 
   ngOnInit(): void {
+    this.store
+      .select('euroJackpotReducer')
+      .pipe(filter(({ currentResult }) => currentResult != null))
+      .subscribe(({ currentResult, error, loading }) => {
+        this.currentResult = currentResult;
+        this.loading = loading;
+
+        if (error) {
+          this.manageError(error);
+          return;
+        }
+
+        // Check if there's any winners
+        if (this.currentResult.odds) {
+          // Take the winners into our odd frame
+          this.oddList = Object.values(this.currentResult.odds);
+          // Clean removing the first element (rank0: {winners: 0, specialPrize: 0, prize: 0})
+          this.oddList.shift();
+          this.generateArray();
+        }
+      });
     // First of all, we need to get the last result calling the GET REST Service
     this.getLastResult();
 
@@ -52,43 +78,19 @@ export class DashboardComponent implements OnInit, OnDestroy {
     this.getDrawDates();
   }
 
-  async getLastResult() {
+  getLastResult() {
     // We use a promise to keep the flow synchronous
-    const resultPromise = new Promise(resolve => {
-      this.subscritions.push(
-        this.ejService.getLastResult().subscribe(
-          data => {
-            // Print the data and asign to our local variable
-            this.currentResult = data;
-
-            // Check if there's any winners
-            if (this.currentResult.odds) {
-              // Take the winners into our odd frame
-              this.oddList = Object.values(this.currentResult.odds);
-              // Clean removing the first element (rank0: {winners: 0, specialPrize: 0, prize: 0})
-              this.oddList.shift();
-              // Resolve the promise
-              resolve(true);
-              return;
-            }
-            // If there aren't any oficial winners already, we finish here
-            this.loaded = true;
-            resolve(false);
-          },
-          error => {
-            this.manageError(error);
-            this.loaded = true;
-            resolve(false);
-          }
-        )
-      );
-    });
-    // Waiting for our service
-    const valid = await resultPromise;
-    // It winners, then compose our build to display the table
-    if (valid) {
-      this.generateArray();
-    }
+    this.subscriptions.push(
+      this.ejService.getLastResult().subscribe(
+        data => {
+          this.store.dispatch(setResult({ result: data }));
+        },
+        error => {
+          this.manageError(error);
+          this.loading = false;
+        }
+      )
+    );
   }
 
   generateArray() {
@@ -174,25 +176,11 @@ export class DashboardComponent implements OnInit, OnDestroy {
       return;
     }
 
-    // Calling the service with the date formatted as a param
-    this.subscritions.push(
-      this.ejService.getDatedResult(dateFormat).subscribe(
-        data => {
-          this.currentResult = data;
-          this.oddList = Object.values(this.currentResult.odds);
-          this.oddList.shift();
-          this.generateArray();
-        },
-        err => {
-          // If there aren't any test files for this date
-          this.manageError(err);
-        }
-      )
-    );
+    this.store.dispatch(loadDateResult({ date: dateFormat }));
   }
 
   showNext() {
-    this.subscritions.push(
+    this.subscriptions.push(
       this.ejService.getNext().subscribe(data => {
         Swal.fire('Next draw', `The next draw will be on ${data.drawingDate}`, 'success');
       })
@@ -206,10 +194,11 @@ export class DashboardComponent implements OnInit, OnDestroy {
       title: 'Oops...',
       text: error.message,
     });
+    this.loaded = true;
   }
 
   ngOnDestroy(): void {
-    this.subscritions.forEach(sc => {
+    this.subscriptions.forEach(sc => {
       sc.unsubscribe();
     });
   }

@@ -1,5 +1,5 @@
 <!-- Error template -->
-<div class="page-wrap d-flex flex-row align-items-center error" *ngIf="error">
+<div class="page-wrap d-flex flex-row align-items-center error" *ngIf="error && !currentResult">
   <div class="container">
     <div class="row justify-content-center">
       <div class="col-md-12 text-center">
@@ -20,12 +20,12 @@
     </div>
   </ng-template>
 
-  <ngx-loading [show]="!loaded" [config]="{ backdropBorderRadius: '3px' }" [template]="customLoadingTemplate"></ngx-loading>
+  <ngx-loading [show]="loading" [config]="{ backdropBorderRadius: '3px' }" [template]="customLoadingTemplate"></ngx-loading>
   //...
 </div>
 
 <!-- Page Content -->
-<div class="container" fxLayout="row" fxLayoutAlign="space-between" *ngIf="loaded && !error">
+<div class="container" fxLayout="row" fxLayoutAlign="space-between" *ngIf="loaded">
   <div class="btn-group btn-block" role="group" aria-label="Basic example">
     <a type="button" class="btn btn-light responsive-width">EuroJackpot</a>
     <a type="button" class="btn btn-light responsive-width selected">EuroJackpot Results &amp; Prize Breakdow</a>
@@ -57,7 +57,7 @@
   <hr />
 
   <div class="row">
-    <h3 class="odds"><span class="euroJackpotColor">EuroJackpot</span> Results for Friday 01 May 2020</h3>
+    <h3 class="odds"><span class="euroJackpotColor">EuroJackpot</span> Results for {{ currentResult.drawingDate | date: 'fullDate' }}</h3>
   </div>
   <div class="row">
     <div class="col-md-10 marged">

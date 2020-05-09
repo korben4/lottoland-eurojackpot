@@ -23,5 +23,4 @@ export class EurojackpotService {
   getDatedResult(date: string) {
     return this.http.get<Last>(`/assets/historical-results/${date}.json`);
   }
-
 }
