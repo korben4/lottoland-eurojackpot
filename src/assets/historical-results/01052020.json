@@ -1,112 +1,90 @@
 {
-  "last": {
-    "nr": 424,
-    "currency": "EUR",
-    "date": {
-      "full": "Die Lottozahlen vom Freitag, den 01.05.2020",
-      "day": 1,
-      "month": 5,
-      "year": 2020,
-      "hour": 21,
-      "minute": 0,
-      "dayOfWeek": "Freitag"
-    },
-    "closingDate": "01.05.2020, 19:00",
-    "lateClosingDate": "01.05.2020, 20:10",
-    "drawingDate": "01.05.2020, 21:00",
-    "numbers": [6, 11, 12, 21, 41],
-    "euroNumbers": [1, 2],
-    "jackpot": "90",
-    "marketingJackpot": "90",
-    "specialMarketingJackpot": "90",
-    "climbedSince": 9,
-    "Winners": 1577974,
-    "odds": {
-      "rank0": {
-        "winners": 0,
-        "specialPrize": 0,
-        "prize": 0
-      },
-      "rank1": {
-        "winners": 1,
-        "specialPrize": 0,
-        "prize": 9000000000
-      },
-      "rank2": {
-        "winners": 4,
-        "specialPrize": 0,
-        "prize": 610429730
-      },
-      "rank3": {
-        "winners": 10,
-        "specialPrize": 0,
-        "prize": 12995490
-      },
-      "rank8": {
-        "winners": 57144,
-        "specialPrize": 0,
-        "prize": 2340
-      },
-      "rank9": {
-        "winners": 74721,
-        "specialPrize": 0,
-        "prize": 1730
-      },
-      "rank10": {
-        "winners": 130172,
-        "specialPrize": 0,
-        "prize": 1430
-      },
-      "rank4": {
-        "winners": 113,
-        "specialPrize": 0,
-        "prize": 383340
-      },
-      "rank5": {
-        "winners": 1590,
-        "specialPrize": 0,
-        "prize": 24510
-      },
-      "rank6": {
-        "winners": 2710,
-        "specialPrize": 0,
-        "prize": 11180
-      },
-      "rank11": {
-        "winners": 280683,
-        "specialPrize": 0,
-        "prize": 1200
-      },
-      "rank7": {
-        "winners": 4790,
-        "specialPrize": 0,
-        "prize": 5420
-      },
-      "rank12": {
-        "winners": 1026036,
-        "specialPrize": 0,
-        "prize": 800
-      }
-    }
+  "nr": 424,
+  "currency": "EUR",
+  "date": {
+    "full": "Die Lottozahlen vom Freitag, den 01.05.2020",
+    "day": 1,
+    "month": 5,
+    "year": 2020,
+    "hour": 21,
+    "minute": 0,
+    "dayOfWeek": "Freitag"
   },
-  "next": {
-    "nr": 425,
-    "currency": "EUR",
-    "date": {
-      "full": "Die Lottozahlen vom Freitag, den 08.05.2020",
-      "day": 8,
-      "month": 5,
-      "year": 2020,
-      "hour": 21,
-      "minute": 0,
-      "dayOfWeek": "Freitag"
+  "closingDate": "01.05.2020, 19:00",
+  "lateClosingDate": "01.05.2020, 20:10",
+  "drawingDate": "01.05.2020, 21:00",
+  "numbers": [6, 11, 12, 21, 41],
+  "euroNumbers": [1, 2],
+  "jackpot": "90",
+  "marketingJackpot": "90",
+  "specialMarketingJackpot": "90",
+  "climbedSince": 9,
+  "Winners": 1577974,
+  "odds": {
+    "rank0": {
+      "winners": 0,
+      "specialPrize": 0,
+      "prize": 0
     },
-    "closingDate": "08.05.2020, 19:00",
-    "lateClosingDate": "08.05.2020, 20:10",
-    "drawingDate": "08.05.2020, 21:00",
-    "jackpot": "10",
-    "marketingJackpot": "10",
-    "specialMarketingJackpot": "10",
-    "climbedSince": 9
+    "rank1": {
+      "winners": 1,
+      "specialPrize": 0,
+      "prize": 9000000000
+    },
+    "rank2": {
+      "winners": 4,
+      "specialPrize": 0,
+      "prize": 610429730
+    },
+    "rank3": {
+      "winners": 10,
+      "specialPrize": 0,
+      "prize": 12995490
+    },
+    "rank8": {
+      "winners": 57144,
+      "specialPrize": 0,
+      "prize": 2340
+    },
+    "rank9": {
+      "winners": 74721,
+      "specialPrize": 0,
+      "prize": 1730
+    },
+    "rank10": {
+      "winners": 130172,
+      "specialPrize": 0,
+      "prize": 1430
+    },
+    "rank4": {
+      "winners": 113,
+      "specialPrize": 0,
+      "prize": 383340
+    },
+    "rank5": {
+      "winners": 1590,
+      "specialPrize": 0,
+      "prize": 24510
+    },
+    "rank6": {
+      "winners": 2710,
+      "specialPrize": 0,
+      "prize": 11180
+    },
+    "rank11": {
+      "winners": 280683,
+      "specialPrize": 0,
+      "prize": 1200
+    },
+    "rank7": {
+      "winners": 4790,
+      "specialPrize": 0,
+      "prize": 5420
+    },
+    "rank12": {
+      "winners": 1026036,
+      "specialPrize": 0,
+      "prize": 800
+    }
   }
 }

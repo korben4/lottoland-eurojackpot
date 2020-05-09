@@ -1,3 +1,4 @@
+<!-- Error template -->
 <div class="page-wrap d-flex flex-row align-items-center error" *ngIf="error">
   <div class="container">
     <div class="row justify-content-center">
@@ -9,6 +10,7 @@
   </div>
 </div>
 
+<!-- Loading template -->
 <div class="my-container">
   <ng-template #customLoadingTemplate>
     <div class="custom-class">
@@ -29,6 +31,28 @@
     <a type="button" class="btn btn-light responsive-width selected">EuroJackpot Results &amp; Prize Breakdow</a>
     <a type="button" class="btn btn-light responsive-width">EuroJackpot Help &amp; FAQ</a>
   </div>
+  <div class="row" style="padding-top: 40px;">
+    <div class="col-md-8">
+      <h1>EuroJackpot Results &amp; Winning Numbers</h1>
+    </div>
+    <div class="col">
+      <div class="row">
+        <div class="form-group col-8">
+          <select class="form-control" (change)="getDatedResult($event)">
+            <option *ngIf="!yearChanged" [value]="currentDate"> {{ currentDate | date: 'EEE, MMMM d' }} </option>
+
+            <option *ngIf="yearChanged"> Please select </option>
+            <option *ngFor="let date of drawDates" [value]="date"> {{ date | date: 'EEE, MMMM d' }} </option>
+          </select>
+        </div>
+        <div class="form-group col-4">
+          <select class="form-control" (change)="changeYear($event)">
+            <option *ngFor="let year of years" [value]="year"> {{ year }} </option>
+          </select>
+        </div>
+      </div>
+    </div>
+  </div>
 
   <hr />
 
@@ -46,6 +70,9 @@
         </li>
       </ul>
     </div>
+    <div class="col">
+      <button type="button" name="" id="" class="btn btn-success btn-lg btn-block" (click)="showNext()">When next?</button>
+    </div>
   </div>
 
   <div class="row" *ngIf="componedList.length > 0">
@@ -53,7 +80,7 @@
       <table mat-table [dataSource]="componedList" class="mat-elevation-z8 tb">
         <ng-container matColumnDef="index">
           <th mat-header-cell *matHeaderCellDef>Tier</th>
-          <td mat-cell *matCellDef="let element; let i = index">{{ i }}</td>
+          <td mat-cell *matCellDef="let element; let i = index">{{ i + 1 | romanize }}</td>
         </ng-container>
 
         <ng-container matColumnDef="match">

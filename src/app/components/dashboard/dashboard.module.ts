@@ -6,9 +6,10 @@ import { NgxLoadingModule } from 'ngx-loading';
 
 import { DashboardRoutingModule } from './dashboard-routing.module';
 import { DashboardComponent } from './dashboard.component';
+import { PipesModule } from '../../pipes/pipes.module';
 
 @NgModule({
   declarations: [DashboardComponent],
-  imports: [CommonModule, DashboardRoutingModule, FormsModule, MatTableModule, NgxLoadingModule.forRoot({})],
+  imports: [CommonModule, DashboardRoutingModule, FormsModule, MatTableModule, NgxLoadingModule.forRoot({}), PipesModule],
 })
 export class DashboardModule {}
