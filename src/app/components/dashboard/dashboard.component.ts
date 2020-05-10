@@ -24,7 +24,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
   // Columns for MatTable
   displayedColumns: string[] = ['index', 'match', 'winners', 'amount'];
 
-  // Winner's numbers
+  // Winning numbers
   oddList: Odd[] = [];
 
   // List with prices and winners
@@ -36,41 +36,55 @@ export class DashboardComponent implements OnInit, OnDestroy {
   // Managing dates
   actualDate: Date;
 
+  /* Date section*/
+
+  // Dates array for fill the combo
   drawDates: Date[] = [];
+  // Date of the last draw
   currentDate: Date;
 
+  // Array for fill the year's combo
   years = [2020, 2019, 2018, 2017, 2016, 2015, 2014, 2013, 2012];
   yearSelected = 2020;
   yearChanged = false;
 
+  // Aux vars
   error: any;
-  loading: boolean;
-  loaded = false;
+  loading = true;
+  auxDate: Date;
 
   constructor(private ejService: EurojackpotService, private store: Store<AppState>) {}
 
   ngOnInit(): void {
-    this.store
-      .select('euroJackpotReducer')
-      .pipe(filter(({ currentResult }) => currentResult != null))
-      .subscribe(({ currentResult, error, loading }) => {
-        this.currentResult = currentResult;
-        this.loading = loading;
+    this.subscriptions.push(
+      // Subscribing to the store data for the reducer
+      this.store
+        .select('euroJackpotReducer')
+        // Checking guard for null
+        .pipe(filter(({ currentResult }) => currentResult != null))
+        .subscribe(({ currentResult, error, loading }) => {
+          this.currentResult = currentResult;
+          this.loading = loading;
 
-        if (error) {
-          this.manageError(error);
-          return;
-        }
+          if (error) {
+            this.manageError(error);
+            return;
+          }
 
-        // Check if there's any winners
-        if (this.currentResult.odds) {
-          // Take the winners into our odd frame
-          this.oddList = Object.values(this.currentResult.odds);
-          // Clean removing the first element (rank0: {winners: 0, specialPrize: 0, prize: 0})
-          this.oddList.shift();
-          this.generateArray();
-        }
-      });
+          // Creating the date for display
+          const { day, month, year } = this.currentResult.date;
+          this.auxDate = new Date(year, month - 1, day);
+
+          // Check if there's any winners
+          if (this.currentResult.odds) {
+            // Take the winners into our odd frame
+            this.oddList = Object.values(this.currentResult.odds);
+            // Clean removing the first element (rank0: {winners: 0, specialPrize: 0, prize: 0})
+            this.oddList.shift();
+            this.generateArray();
+          }
+        })
+    );
     // First of all, we need to get the last result calling the GET REST Service
     this.getLastResult();
 
@@ -79,10 +93,10 @@ export class DashboardComponent implements OnInit, OnDestroy {
   }
 
   getLastResult() {
-    // We use a promise to keep the flow synchronous
     this.subscriptions.push(
       this.ejService.getLastResult().subscribe(
         data => {
+          // Dispatch the action which set the data
           this.store.dispatch(setResult({ result: data }));
         },
         error => {
@@ -101,7 +115,6 @@ export class DashboardComponent implements OnInit, OnDestroy {
     this.oddList.forEach(odd => {
       this.componedList.push(new Item(this.matches.shift(), odd.winners, odd.prize));
     });
-    this.loaded = true;
   }
 
   generateMatches() {
@@ -179,6 +192,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
     this.store.dispatch(loadDateResult({ date: dateFormat }));
   }
 
+  // Show the next draw date
   showNext() {
     this.subscriptions.push(
       this.ejService.getNext().subscribe(data => {
@@ -194,7 +208,6 @@ export class DashboardComponent implements OnInit, OnDestroy {
       title: 'Oops...',
       text: error.message,
     });
-    this.loaded = true;
   }
 
   ngOnDestroy(): void {

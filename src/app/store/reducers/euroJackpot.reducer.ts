@@ -27,6 +27,8 @@ const _EuroJackpotReducer = createReducer(
 
   on(loadDateResult, (state, { date }) => ({
     ...state,
+    error: null,
+    loaded: false,
     loading: true,
   })),
 
@@ -34,7 +36,6 @@ const _EuroJackpotReducer = createReducer(
     ...state,
     loading: false,
     loaded: true,
-    error: null,
     currentResult: { ...result },
   })),
 
